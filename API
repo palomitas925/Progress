@@ -1,0 +1,74 @@
+<?php
+// Configuración de la base de datos
+$db_config = [
+    'host' => 'localhost',
+    'user' => 'Omar',
+    'pass' => 'Palomitas32$',
+    'name' => 'popcode'
+];
+
+function connectDB() {
+    global $db_config;
+    try {
+        $conn = new PDO(
+            "mysql:host={$db_config['host']};dbname={$db_config['name']};charset=utf8mb4",
+            $db_config['user'],
+            $db_config['pass'],
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        return $conn;
+    } catch (PDOException $e) {
+        die("Error de conexión: " . $e->getMessage());
+    }
+}
+
+// API endpoints
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json');
+    $action = $_POST['action'] ?? '';
+    $db = connectDB();
+    
+    try {
+        if ($action === 'getInventarios') {
+            $stmt = $db->query("SELECT id_inventario, nombre FROM inventarios");
+            echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+            exit;
+        }
+        if ($action === 'getCategorias') {
+            $id_inventario = $_POST['id_inventario'] ?? 0;
+            $stmt = $db->prepare("SELECT id_categoria, nombre FROM categorias WHERE id_inventario = ?");
+            $stmt->execute([$id_inventario]);
+            echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+            exit;
+        }
+        if ($action === 'getCampos') {
+            $id_categoria = $_POST['id_categoria'] ?? 0;
+            $stmt = $db->prepare("SELECT nombre FROM campos WHERE id_categoria = ? ORDER BY orden ASC, id ASC");
+            $stmt->execute([$id_categoria]);
+            echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+            exit;
+        }
+        if ($action === 'getRegistros') {
+            $id_categoria = $_POST['id_categoria'] ?? 0;
+            $stmt = $db->prepare("SELECT * FROM registros WHERE categoria_id = ?");
+            $stmt->execute([$id_categoria]);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Convierte los datos JSON a array asociativo si existe columna 'datos'
+            foreach ($rows as &$row) {
+                if (isset($row['datos'])) {
+                    $json = json_decode($row['datos'], true);
+                    if (is_array($json)) $row = array_merge($row, $json);
+                }
+            }
+            echo json_encode($rows);
+            exit;
+        }
+        // ...otros endpoints...
+        throw new Exception('Acción no soportada');
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+    exit;
+}
+?>
