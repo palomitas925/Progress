@@ -11,25 +11,3 @@ Sitio  http://prueba828:*ZPWrC043a2k@www.pruebasslimpops.com.mialias.net/    pru
 
 ssh pruebassbc@185.42.104.13 
 Palomitas32$
-
-Necesito que corrijas este código, y si detectas algún error corrigelo, pero no quiero que agregues otro botón ni nada simplemente dale la función que necesito que haga que es la siguiente 
-
-Proceso
-Dentro del campo código de barras se ingresa el código de barras, este botón estará siempre activo para poder insertar texto continuamente y este hará una consulta en la base de datos para obtener la descripción y la imagen que están en la base de datos 
-De esta tabla se traen los datos 
-CREATE TABLE `productos_escanear` (
-  `codigo_barras` varchar(20) NOT NULL,
-  `descripcion` varchar(255) NOT NULL,
-  `imagen` varchar(255) DEFAULT NULL,
-  `fecha` date DEFAULT NULL
-Posteriormente se iran guardando registros de esta forma en otro formulario que es el que sigue de este en el botón registros, estos registros se van a ir guardando de manera totalmente automática conforme se vaya escaneando 
-CREATE TABLE `registros_escaneos` (
-  `id_escaneado` int(11) NOT NULL,
-  `codigo_barras_producto` varchar(20) DEFAULT NULL,
-  `descripcion_producto` varchar(255) DEFAULT NULL,
-  `lote_escaneado` int(11) DEFAULT NULL,
-  `fecha_escaneo` date DEFAULT NULL,
-  `hora_escaneo` time DEFAULT NULL,
-  `estado_escaneo` varchar(45) DEFAULT NULL
-
-Asi mismo en el formulario previo se selecciono el producto a escanear entonces hará una comparativa de códigos de barras si se lee correctamente entonces se guarda el estado como correcto, si no se lee o no es correcto entonces se guarda el estado como incorrecto y se emite una alerta sonora 
