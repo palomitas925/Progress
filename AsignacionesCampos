@@ -18,3 +18,12 @@ Receptor nombre de quien recibe
 
 
 Boton añadir otra asignación 
+
+En editar no permita cambiar la cantidad
+Que para que se realice un nuevo registro esten al menos los dos primeros campos (Cantidad y campo identificador)
+Que el historial de operaciones sea conforme la categoría
+Que en en los Historiales en Operaciones Articulo ID y en Entradas y Salidas Registro, lo que salga ahí sea el valor del campo identificador conforme el registro y no el id conforme la base de datos
+Quiero que cambies la información que se solicita al dar clic en el botón asignar modalretiro ahora la función que tendrá será recabar otros datos y ponerlos en un documento pdf con campos editables
+Campos a rellenar en PDF que se tomaran del sistema web:
+Nombres de campos Dia, Mes, Año, Articulo, Marca, Modelo, Serie, Adicional, Receptor (en Dia, Mes, Año que se rellenen automáticamente conforme la fecha actual) y todos estos datos rellenaran el PDF que se encuentra en ../Responsivas/Palntilla.pdf y cuando se genere una responsiva se generara un archivo que se llamara Responsiva_Nombre_del_Receptor.pdf y se guardara la información de las asignaciones en otro historial dentro de los historiales llamado Asignaciones y se gaurdaran con estos campos:
+No. Asignación, Fecha, Articulo, Marca, Modelo, Serie, Adicional, Receptor, Inventario. Categoria, Articulo ID(llenado con el campo identificador de ese registro), para realizar una asignación se debe seleccionar el articulo a asignar y si el registro tiene el campo Marca, Modelo, Y algo como No.Serie se incluirá y se llenaran automáticamente al abrirse el modal de asignar y solo se rellenaran los datos faltantes para generar la responsiva, valida si se requiere otra tabla en el archivo popcode.sql
